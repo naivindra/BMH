@@ -6,7 +6,7 @@
     <title>Bharat Mediya House - Future of Media</title>
     <meta name="description" content="Visual Engineering & Strategic Dominance. We shape your dreams.">
     
-    <!-- Tailwind CSS Configuration (Must be defined before Tailwind script) -->
+    <!-- Tailwind CSS Configuration -->
     <script>
         window.tailwind = {
             config: {
@@ -147,17 +147,23 @@
             transition: opacity 0.5s ease;
         }
 
-        /* --- Cinematic Hero --- */
+        /* --- Cinematic Hero Slider --- */
         .hero-slide {
-            position: absolute; inset: 0; background-size: cover; background-position: center;
+            position: absolute; 
+            inset: 0; 
+            background-size: cover; 
+            background-position: center;
             opacity: 0; 
             transform-origin: center center;
             will-change: transform, opacity;
             z-index: 0;
+            /* Ultra Smooth crossfade transition */
+            transition: opacity 2.5s ease-in-out; 
         }
         .hero-slide.active { 
-            opacity: 0.5; 
-            animation: drift 15s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            /* Cinematic Low Opacity (30%) for depth */
+            opacity: 0.3; 
+            animation: drift 18s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
         @keyframes drift {
             0% { transform: scale(1.1); }
@@ -485,6 +491,51 @@
             }, btn, originalText, "Message Sent");
         };
 
+        window.handleFileSelect = function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const content = document.getElementById('dropzone-content');
+            const status = document.getElementById('file-upload-status');
+            const fileName = document.getElementById('uploaded-file-name');
+            const circle = document.getElementById('upload-progress-circle');
+            const successIcon = document.getElementById('upload-success-icon');
+            const statusText = document.getElementById('upload-status-text');
+
+            if(content) content.classList.add('opacity-0'); // Fade out default content
+            if(status) status.classList.remove('hidden'); // Show status overlay
+            
+            if(fileName) fileName.textContent = file.name;
+
+            // Simulate upload progress
+            if(circle) {
+                // Reset
+                circle.style.transition = 'none';
+                circle.style.strokeDashoffset = '125.6';
+                successIcon.classList.remove('opacity-100');
+                statusText.textContent = "Uploading...";
+                statusText.classList.remove('text-brand-green');
+                statusText.classList.add('text-gray-500');
+                
+                // Force reflow
+                void circle.offsetWidth;
+
+                // Animate
+                setTimeout(() => {
+                    circle.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
+                    circle.style.strokeDashoffset = '0';
+                }, 100);
+
+                // Completion
+                setTimeout(() => {
+                    if(successIcon) successIcon.classList.add('opacity-100');
+                    if(statusText) statusText.textContent = "Ready";
+                    statusText.classList.remove('text-gray-500');
+                    statusText.classList.add('text-brand-green');
+                }, 1600);
+            }
+        };
+
         // --- URL ROUTING CONFIG ---
         const urlRoutes = {
             404: { id: 'home', title: "Home" },
@@ -714,11 +765,15 @@
             <header class="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6 md:px-12 border-b border-white/10 min-h-screen flex flex-col justify-center overflow-hidden">
                 <div id="hero-slider-bg" class="perspective-scene">
                     <div class="hero-slide active z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');" data-scroll-speed="0.2"></div>
-                    <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
-                    <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
+                    <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
                     <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
+                    <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
+                    <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
+                    <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
+                    <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
                 </div>
-                <div class="absolute inset-0 bg-black/80 z-0"></div>
+                <!-- Gradient Overlay for better text readability -->
+                <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80 z-0 pointer-events-none"></div>
 
                 <div class="max-w-[1920px] mx-auto w-full relative z-10 perspective-scene">
                     <div class="absolute top-0 right-0 md:right-12 flex items-center gap-3 animate-fade-in-down parallax-layer" data-speed-x="0.02" data-speed-y="0.02">
@@ -760,12 +815,14 @@
                          <h2 class="text-4xl md:text-6xl font-display font-bold uppercase text-white">The<br>Process</h2>
                      </div>
 
-                     <div class="relative w-full aspect-video md:aspect-[21/9] bg-white/5 p-2 rounded-sm transform hover:-translate-y-2 transition-transform duration-500 hover-trigger group neumorphic-card">
+                     <!-- Updated Process Card: Tilt removed, Scale on hover -->
+                     <div class="relative w-full aspect-video md:aspect-[21/9] bg-white/5 p-2 rounded-sm transition-all duration-500 hover-trigger group neumorphic-card cursor-pointer">
                         <div class="w-full h-full bg-black relative overflow-hidden shadow-2xl rounded-xl">
-                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 parallax-layer" data-scroll-speed="-0.1">
-                            <div class="absolute inset-0 bg-black/20 mix-blend-multiply"></div>
+                            <!-- Removed parallax-layer from image to fix hover jitter -->
+                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out">
+                            <div class="absolute inset-0 bg-black/20 mix-blend-multiply pointer-events-none"></div>
                         </div>
-                        <div class="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-10 parallax-layer" data-speed-x="0.06" data-speed-y="0.06">
+                        <div class="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-10 pointer-events-none">
                             <span class="text-white bg-brand-purple px-4 py-2 text-xs md:text-sm font-mono uppercase font-bold tracking-widest shadow-lg">Agency Life</span>
                         </div>
                      </div>
@@ -893,107 +950,6 @@
             </a>`;
         }
 
-        function getCareerHTML() {
-            return `
-            <div class="relative min-h-[60vh] md:min-h-[70vh] w-full overflow-hidden flex flex-col justify-end pt-32 pb-12 md:pb-20 px-6 md:px-12 border-b border-white/10 perspective-scene">
-                 <div class="absolute inset-0 bg-cover bg-center parallax-layer" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');" data-scroll-speed="0.2"></div>
-                 <div class="absolute inset-0 bg-black/70 z-0"></div>
-                 <div class="relative z-10 w-full max-w-[1920px] mx-auto parallax-layer" data-speed-y="0.05">
-                    <a href="/" onclick="window.route(event)" class="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-widest text-gray-400 hover:text-white mb-8 hover-trigger bg-black/50 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md transition-all hover:bg-white hover:text-black group"><i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Back to Hub</a>
-                    <h1 class="hero-title font-display text-4xl md:text-9xl font-extrabold uppercase text-white leading-none mb-6 glitch-text">Join The Cult</h1>
-                 </div>
-            </div>
-            <section class="border-b border-white/10 bg-brand-dark p-8 md:p-16">
-                 <div class="max-w-4xl mx-auto">
-                    <div class="text-center mb-16">
-                        <h3 class="text-3xl font-display font-bold uppercase text-white mb-6">Current Openings</h3>
-                        <p class="text-lg md:text-xl text-gray-400 mb-12 font-light leading-relaxed max-w-3xl mx-auto">
-                            At Bharat Mediya House, we don't hire employees; we recruit partners in crime. If you are obsessed with perfection and allergic to mediocrity, you belong here.
-                        </p>
-                        
-                        <div class="grid gap-6 text-left">
-                            <div class="neumorphic-card p-6 group cursor-pointer">
-                                <div class="flex justify-between items-center">
-                                    <h4 class="text-xl font-bold text-white">Art Director</h4>
-                                    <span class="text-xs font-mono text-brand-saffron border border-brand-saffron px-2 py-1 rounded">Apply Below</span>
-                                </div>
-                                <p class="text-sm text-gray-500 mt-2">Mumbai • Full Time</p>
-                            </div>
-                            <div class="neumorphic-card p-6 group cursor-pointer">
-                                <div class="flex justify-between items-center">
-                                    <h4 class="text-xl font-bold text-white">Motion Designer</h4>
-                                    <span class="text-xs font-mono text-brand-saffron border border-brand-saffron px-2 py-1 rounded">Apply Below</span>
-                                </div>
-                                <p class="text-sm text-gray-500 mt-2">Remote • Contract</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border-t border-white/10 pt-16">
-                        <h3 class="text-2xl font-display font-bold uppercase text-white mb-8 text-center">Submit Application</h3>
-                        
-                        <form name="career-form" method="POST" data-netlify="true" enctype="multipart/form-data" class="space-y-8 max-w-2xl mx-auto" onsubmit="submitCareerForm(event)">
-                            <input type="hidden" name="form-name" value="career-form" />
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div class="relative group">
-                                    <input type="text" name="applicant_name" class="peer w-full neumorphic-input text-lg font-light placeholder-transparent" placeholder=" " required>
-                                    <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-saffron transition-all pointer-events-none">Full Name</label>
-                                </div>
-                                <div class="relative group">
-                                    <input type="email" name="applicant_email" class="peer w-full neumorphic-input text-lg font-light placeholder-transparent" placeholder=" " required>
-                                    <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-saffron transition-all pointer-events-none">Email Address</label>
-                                    </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div class="relative group">
-                                    <input type="tel" name="applicant_mobile" class="peer w-full neumorphic-input text-lg font-light placeholder-transparent" placeholder=" " required>
-                                    <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-saffron transition-all pointer-events-none">Mobile Number</label>
-                                </div>
-                                <div class="relative group">
-                                    <select name="applicant_post" class="peer w-full neumorphic-input text-lg font-light text-white appearance-none cursor-pointer">
-                                        <option value="" disabled selected class="text-gray-500">Select Position</option>
-                                        <option value="art_director" class="bg-[#080808]">Art Director</option>
-                                        <option value="video_editor" class="bg-[#080808]">Video Editor</option>
-                                        <option value="motion_graphics_designer" class="bg-[#080808]">Motion Graphics Designer</option>
-                                        <option value="vfx_artist" class="bg-[#080808]">VFX Artist</option>
-                                        <option value="content_writer" class="bg-[#080808]">Content Writer</option>
-                                        <option value="strategist" class="bg-[#080808]">Strategist</option>
-                                        <option value="3d_artist" class="bg-[#080808]">3D Artist</option>
-                                        <option value="business_developer" class="bg-[#080808]">Business Developer</option>
-                                        <option value="business_executive" class="bg-[#080808]">Business Executive</option>
-                                        <option value="developer" class="bg-[#080808]">Developer</option>
-                                        <option value="social_media_manager" class="bg-[#080808]">Social Media Manager</option>
-                                        <option value="intern" class="bg-[#080808]">Internship</option>
-                                        <option value="other" class="bg-[#080808]">Other</option>
-                                    </select>
-                                    <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-focus:text-brand-saffron transition-all pointer-events-none">Position Applied For</label>
-                                    <i class="fas fa-chevron-down absolute right-6 top-5 text-gray-500 text-xs pointer-events-none"></i>
-                                </div>
-                            </div>
-
-                            <div class="relative group pt-4">
-                                <label class="block text-xs text-gray-500 uppercase tracking-widest mb-3">Upload Resume / Portfolio (PDF)</label>
-                                <label class="flex items-center justify-center w-full h-32 neumorphic-input border border-white/5 border-dashed cursor-pointer hover:bg-white/5 transition-all group">
-                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-3 group-hover:text-brand-saffron transition-colors"></i>
-                                        <p class="text-sm text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                    </div>
-                                    <input type="file" name="resume" class="hidden" accept=".pdf,.doc,.docx" />
-                                </label>
-                            </div>
-                            <div class="text-center pt-4">
-                                <button type="submit" class="px-8 py-4 w-full md:w-auto neumorphic-btn-dark font-bold uppercase tracking-widest rounded-full">
-                                    Send Application
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                 </div>
-            </section>`;
-        }
-
         function renderServiceLink(num, title, color, path) {
             return `<a href="${path}" onclick="window.route(event)" class="neumorphic-card p-6 md:p-14 flex flex-col md:flex-row justify-between items-center group block hover-trigger liquid-target gap-4 md:gap-0">
                 <div class="flex items-center gap-4 md:gap-16 w-full md:w-auto">
@@ -1024,7 +980,7 @@
 
                 // Updated integration pattern to avoid context errors
                 if (typeof ScrollTrigger !== 'undefined') {
-                    lenis.on('scroll', (e) => ScrollTrigger.update(e));
+                    lenis.on('scroll', () => ScrollTrigger.update());
                 }
                 
                 // Add Lenis to GSAP ticker for better performance
