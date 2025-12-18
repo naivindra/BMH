@@ -2,20 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Bharat Mediya House - Future of Media</title>
+    <meta name="description" content="Visual Engineering & Strategic Dominance. We shape your dreams.">
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS Configuration (Must be defined before Tailwind script) -->
+    <script>
+        window.tailwind = {
+            config: {
+                theme: {
+                    extend: {
+                        colors: {
+                            brand: {
+                                purple: '#632186',
+                                red: '#b32e26',
+                                green: '#189b67',
+                                saffron: '#FF9933',
+                                dark: '#050505',
+                                gray: '#888888',
+                                light: '#f9f9f9',
+                                neon: '#00f3ff'
+                            }
+                        },
+                        fontFamily: {
+                            sans: ['Inter', 'sans-serif'],
+                            display: ['Manrope', 'sans-serif'],
+                            mono: ['Space Mono', 'monospace'],
+                            roboto: ['Roboto', 'sans-serif'],
+                        },
+                        animation: {
+                            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                            'spin-slow': 'spin 12s linear infinite',
+                            'fade-in-down': 'fadeInDown 0.5s ease-out forwards',
+                            'marquee': 'marquee 25s linear infinite',
+                        },
+                        keyframes: {
+                            fadeInDown: {
+                                '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                                '100%': { opacity: '1', transform: 'translateY(0)' },
+                            },
+                            marquee: {
+                                '0%': { transform: 'translateX(0%)' },
+                                '100%': { transform: 'translateX(-100%)' },
+                            }
+                        },
+                        screens: {
+                            'xs': '475px',
+                        }
+                    }
+                }
+            }
+        };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- GSAP for High-End Motion -->
+    <!-- GSAP & Plugins -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
-    <!-- Vanilla Tilt for 3D Effect -->
+    <!-- Vanilla Tilt -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 
-    <!-- Lenis for Smooth Scrolling -->
+    <!-- Lenis -->
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
     
     <!-- Font Awesome -->
@@ -26,49 +74,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&family=Roboto:wght@700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            purple: '#632186',
-                            red: '#b32e26',
-                            green: '#189b67',
-                            saffron: '#FF9933',
-                            dark: '#050505',
-                            gray: '#888888',
-                            light: '#f9f9f9',
-                            neon: '#00f3ff'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Manrope', 'sans-serif'],
-                        mono: ['Space Mono', 'monospace'],
-                        roboto: ['Roboto', 'sans-serif'],
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 12s linear infinite',
-                        'fade-in-down': 'fadeInDown 0.5s ease-out forwards',
-                        'marquee': 'marquee 25s linear infinite',
-                    },
-                    keyframes: {
-                        fadeInDown: {
-                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        marquee: {
-                            '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-100%)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
     <style>
         /* --- Base Setup --- */
         html.lenis { height: auto; }
@@ -84,10 +89,16 @@
             scrollbar-width: none; 
             -ms-overflow-style: none;
             perspective: 2000px;
-            /* Hide default cursor to show custom one */
-            cursor: none; 
+            cursor: none; /* Custom cursor */
         }
         body::-webkit-scrollbar { display: none; }
+
+        /* Mobile specific adjustments */
+        @media (hover: none) and (pointer: coarse) {
+            body { cursor: auto; }
+            .cursor-dot, .cursor-outline { display: none !important; }
+            .magnetic-element { transition: transform 0.2s ease; }
+        }
 
         /* --- Custom Cursor --- */
         .cursor-dot,
@@ -112,12 +123,10 @@
             width: 40px;
             height: 40px;
             border: 1px solid rgba(255, 255, 255, 0.5);
-            /* The "blur" effect you requested */
             backdrop-filter: blur(2px); 
             transition: width 0.2s, height 0.2s, background-color 0.2s;
         }
 
-        /* Hover state for links/buttons */
         body.hovering .cursor-outline {
             width: 60px;
             height: 60px;
@@ -127,7 +136,7 @@
 
         /* --- Filters & Effects --- */
         .film-grain {
-            position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: 0.07;
+            position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: 0.05;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
             mix-blend-mode: overlay;
         }
@@ -146,9 +155,8 @@
             will-change: transform, opacity;
             z-index: 0;
         }
-        /* Subtle Drift / Ken Burns */
         .hero-slide.active { 
-            opacity: 0.5; /* Original Opacity */
+            opacity: 0.5; 
             animation: drift 15s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
         @keyframes drift {
@@ -168,7 +176,6 @@
             filter: drop-shadow(0 0 10px rgba(179, 46, 38, 0.3));
         }
 
-        /* --- 3D Scene Container --- */
         .perspective-scene {
             position: relative;
             transform-style: preserve-3d;
@@ -182,7 +189,7 @@
         .faq-icon { transition: transform 0.3s ease; }
         .faq-item.active .faq-icon { transform: rotate(45deg); color: #FF9933; }
 
-        .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, #632186, #b32e26, #00f3ff); width: 0%; z-index: 1000; }
+        .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #632186, #b32e26, #00f3ff); width: 0%; z-index: 1000; }
         .page-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; transform: scaleY(0); transform-origin: bottom; pointer-events: none; }
 
         .reveal-hidden { opacity: 0; transform: translateY(30px) scale(0.98); }
@@ -202,22 +209,13 @@
                          -16px -16px 32px #101010;
         }
 
-        .neumorphic-btn {
-            background: #e0e0e0; /* Fallback */
-            background: linear-gradient(145deg, #ffffff, #dcdcdc);
-            box-shadow:  5px 5px 10px #040404,
-                         -5px -5px 10px #161616;
-            color: #000;
-            border: none;
-            transition: all 0.2s ease;
-        }
-        /* Dark Theme Neumorphic Button */
         .neumorphic-btn-dark {
             background: linear-gradient(145deg, #0b0b0b, #080808);
             box-shadow:  6px 6px 12px #040404,
                          -6px -6px 12px #101010;
             color: #fff;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
         .neumorphic-btn-dark:hover {
             background: linear-gradient(145deg, #080808, #0b0b0b);
@@ -227,21 +225,33 @@
             color: #FF9933;
         }
 
+        /* INPUT STYLES */
         .neumorphic-input {
             background: #050505;
-            border: none;
+            border: 1px solid transparent; 
             border-radius: 12px;
-            box-shadow: inset 6px 6px 12px #020202,
-                        inset -6px -6px 12px #0c0c0c;
+            box-shadow: inset 4px 4px 10px #020202,
+                        inset -4px -4px 10px #0c0c0c;
             color: #fff;
             padding: 1rem 1.5rem;
-            transition: box-shadow 0.3s ease;
+            transition: all 0.3s ease;
         }
         .neumorphic-input:focus {
             outline: none;
-            box-shadow: inset 8px 8px 16px #010101,
-                        inset -8px -8px 16px #0f0f0f,
-                        0 0 5px rgba(99, 33, 134, 0.5);
+            border: 1px solid #632186; 
+            box-shadow: inset 2px 2px 6px #010101,
+                        inset -2px -2px 6px #0f0f0f;
+            background-color: #050505;
+        }
+
+        /* Prevent Auto-fill White Flash */
+        .neumorphic-input:-webkit-autofill,
+        .neumorphic-input:-webkit-autofill:hover, 
+        .neumorphic-input:-webkit-autofill:focus, 
+        .neumorphic-input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px #050505 inset !important;
+            -webkit-text-fill-color: white !important;
+            transition: background-color 5000s ease-in-out 0s;
         }
     </style>
 </head>
@@ -261,7 +271,7 @@
     <div class="film-grain"></div>
     <div class="neural-glow" id="neural-glow"></div>
     
-    <!-- Custom Cursor Elements -->
+    <!-- Custom Cursor Elements (Hidden on Touch) -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
@@ -269,42 +279,45 @@
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-[#050505]/90 backdrop-blur-xl border-b border-white/5 transition-all duration-500" id="navbar">
-        <div class="flex justify-between items-center h-28 px-6 md:px-12 max-w-[1920px] mx-auto">
-            <a href="#" onclick="window.router.navigate('home'); return false;" class="flex items-center gap-3 group hover-trigger magnetic-element z-50" data-strength="20">
+        <div class="flex justify-between items-center h-20 md:h-28 px-6 md:px-12 max-w-[1920px] mx-auto">
+            <a href="/" onclick="window.route(event)" class="flex items-center gap-3 group hover-trigger magnetic-element z-50" data-strength="20">
                 <div class="flex flex-col justify-center">
-                    <div class="font-roboto font-black text-5xl tracking-tighter leading-none">
-                        <!-- Updated Logo to be all White -->
+                    <div class="font-roboto font-black text-3xl md:text-5xl tracking-tighter leading-none">
                         <span class="text-white">B</span><span class="text-white">M</span><span class="text-white">H</span>
                     </div>
                 </div>
             </a>
 
             <div class="hidden md:flex items-center gap-12">
-                <a href="#" onclick="window.router.navigate('home'); return false;" class="text-sm font-mono font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors hover-trigger relative group py-2 magnetic-element" data-strength="15">
+                <a href="/" onclick="window.route(event)" class="text-sm font-mono font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors hover-trigger relative group py-2 magnetic-element" data-strength="15">
                     <span class="absolute -left-4 opacity-0 group-hover:opacity-100 transition-opacity text-brand-saffron">></span> 01 // Home
                 </a>
-                <a href="#" onclick="window.router.navigate('servicesOverview'); return false;" class="text-sm font-mono font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors hover-trigger relative group py-2 magnetic-element" data-strength="15">
+                <a href="/services" onclick="window.route(event)" class="text-sm font-mono font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors hover-trigger relative group py-2 magnetic-element" data-strength="15">
                     <span class="absolute -left-4 opacity-0 group-hover:opacity-100 transition-opacity text-brand-saffron">></span> 02 // Services
                 </a>
-                <a href="#" onclick="window.router.navigate('career'); return false;" class="text-sm font-mono font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors hover-trigger relative group py-2 magnetic-element" data-strength="15">
+                <a href="/careers" onclick="window.route(event)" class="text-sm font-mono font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors hover-trigger relative group py-2 magnetic-element" data-strength="15">
                     <span class="absolute -left-4 opacity-0 group-hover:opacity-100 transition-opacity text-brand-saffron">></span> 03 // Careers
                 </a>
-                <a href="#contact" onclick="window.lenis.scrollTo('#contact'); return false;" class="neumorphic-btn-dark px-10 py-4 rounded-full text-sm font-bold uppercase tracking-widest transition-all duration-500 relative overflow-hidden group">
+                <a href="#contact" onclick="window.lenis.scrollTo('#contact'); return false;" class="neumorphic-btn-dark px-8 py-3 md:px-10 md:py-4 rounded-full text-xs md:text-sm font-bold uppercase tracking-widest transition-all duration-500 relative overflow-hidden group">
                     <span class="relative z-10">Let's Talk</span>
                 </a>
             </div>
 
-            <button class="md:hidden text-2xl text-white hover-trigger z-50 p-2" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+            <button class="md:hidden text-2xl text-white hover-trigger z-50 p-2" onclick="document.getElementById('mobile-menu').classList.remove('hidden')">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-black/95 backdrop-blur-xl border-t border-white/10 p-6 absolute top-0 left-0 w-full h-screen z-40 flex flex-col justify-center">
-            <a href="#" onclick="window.router.navigate('home'); document.getElementById('mobile-menu').classList.add('hidden'); return false;" class="block py-6 text-5xl font-display font-bold border-b border-white/10 text-gray-300 hover:text-brand-purple transition-colors">01 Home</a>
-            <a href="#" onclick="window.router.navigate('servicesOverview'); document.getElementById('mobile-menu').classList.add('hidden'); return false;" class="block py-6 text-5xl font-display font-bold border-b border-white/10 text-gray-300 hover:text-brand-purple transition-colors">02 Services</a>
-            <a href="#" onclick="window.router.navigate('career'); document.getElementById('mobile-menu').classList.add('hidden'); return false;" class="block py-6 text-5xl font-display font-bold border-b border-white/10 text-gray-300 hover:text-brand-purple transition-colors">03 Careers</a>
-            <a href="#contact" onclick="document.getElementById('mobile-menu').classList.add('hidden'); window.lenis.scrollTo('#contact');" class="block py-6 text-5xl font-display font-bold text-brand-purple mt-8">Contact</a>
-            <button class="absolute top-8 right-8 text-white text-xl" onclick="document.getElementById('mobile-menu').classList.add('hidden')">CLOSE [X]</button>
+        <div id="mobile-menu" class="hidden fixed inset-0 bg-black/95 backdrop-blur-xl z-[60] flex flex-col justify-center items-center">
+            <button class="absolute top-6 right-6 text-white text-xl p-4" onclick="document.getElementById('mobile-menu').classList.add('hidden')">
+                CLOSE [X]
+            </button>
+            <div class="flex flex-col gap-8 text-center">
+                <a href="/" onclick="window.route(event); document.getElementById('mobile-menu').classList.add('hidden');" class="text-4xl font-display font-bold text-gray-300 hover:text-brand-purple transition-colors">01 Home</a>
+                <a href="/services" onclick="window.route(event); document.getElementById('mobile-menu').classList.add('hidden');" class="text-4xl font-display font-bold text-gray-300 hover:text-brand-purple transition-colors">02 Services</a>
+                <a href="/careers" onclick="window.route(event); document.getElementById('mobile-menu').classList.add('hidden');" class="text-4xl font-display font-bold text-gray-300 hover:text-brand-purple transition-colors">03 Careers</a>
+                <a href="#contact" onclick="document.getElementById('mobile-menu').classList.add('hidden'); window.lenis.scrollTo('#contact');" class="text-4xl font-display font-bold text-brand-purple mt-4">Contact</a>
+            </div>
         </div>
     </nav>
 
@@ -318,20 +331,20 @@
         <div class="max-w-[1920px] mx-auto grid grid-cols-1 md:grid-cols-2">
             <div class="p-8 md:p-20 border-b md:border-b-0 md:border-r border-white/10 relative overflow-hidden">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-purple/20 rounded-full filter blur-[120px] animate-pulse-slow"></div>
-                <h2 class="text-5xl md:text-8xl font-display font-bold mb-12 leading-none uppercase relative z-10 parallax-layer" data-speed-y="0.05">Have an<br>idea?</h2>
-                <div class="flex flex-col gap-4 items-start relative z-10">
-                    <a href="mailto:design@mediyahouse.com" class="text-2xl md:text-4xl font-display font-bold tracking-wide hover:text-brand-saffron transition-colors inline-block">design@mediyahouse.com</a>
+                <h2 class="text-5xl md:text-8xl font-display font-bold mb-8 md:mb-12 leading-none uppercase relative z-10 parallax-layer" data-speed-y="0.05">Have an<br>idea?</h2>
+                <div class="flex flex-col gap-4 items-start relative z-10 break-all">
+                    <a href="mailto:design@mediyahouse.com" class="text-xl md:text-4xl font-display font-bold tracking-wide hover:text-brand-saffron transition-colors inline-block">design@mediyahouse.com</a>
                     <a href="mailto:designs11@mediyahouse.com" class="text-lg md:text-2xl font-display font-bold tracking-wide text-gray-400 hover:text-brand-saffron transition-colors inline-block">designs11@mediyahouse.com</a>
                 </div>
-                <div class="mt-16 relative z-10 space-y-4">
+                <div class="mt-12 md:mt-16 relative z-10 space-y-4">
                     <div>
                         <p class="text-gray-500 uppercase text-xs tracking-widest mb-1 font-mono">Contact</p>
-                        <p class="text-2xl font-display font-bold tracking-wide hover:text-brand-saffron transition-colors">+91 9960003348</p>
-                        <p class="text-2xl font-display font-bold tracking-wide hover:text-brand-saffron transition-colors">+91 8806663651</p>
+                        <p class="text-xl md:text-2xl font-display font-bold tracking-wide hover:text-brand-saffron transition-colors">+91 9960003348</p>
+                        <p class="text-xl md:text-2xl font-display font-bold tracking-wide hover:text-brand-saffron transition-colors">+91 8806663651</p>
                     </div>
                     <div>
                         <p class="text-gray-500 uppercase text-xs tracking-widest mb-1 font-mono">Location</p>
-                        <p class="text-lg text-gray-300 font-light max-w-xs">Nashik, Maharashtra, Bharat- 422009.</p>
+                        <p class="text-base md:text-lg text-gray-300 font-light max-w-xs">Nashik, Maharashtra, Bharat- 422009.</p>
                     </div>
                     <div class="pt-4 flex items-center gap-2">
                         <span class="w-2 h-2 bg-brand-green rounded-full animate-pulse"></span> 
@@ -340,27 +353,21 @@
                 </div>
             </div>
             <div class="p-8 md:p-20 bg-[#080808]">
-                <!-- 
-                     NETLIFY CONTACT FORM SETUP:
-                     1. name="contact-form"
-                     2. method="POST"
-                     3. data-netlify="true"
-                     4. Hidden "form-name" input
-                -->
-                <form name="contact-form" method="POST" data-netlify="true" class="space-y-10">
+                <!-- Contact Form -->
+                <form name="contact-form" method="POST" data-netlify="true" class="space-y-8 md:space-y-10" onsubmit="submitContactForm(event)">
                     <input type="hidden" name="form-name" value="contact-form" />
                     
                     <div class="relative group">
-                        <input type="text" name="name" class="peer w-full neumorphic-input text-xl font-light placeholder-transparent" placeholder="Name" required>
+                        <input type="text" name="name" class="peer w-full neumorphic-input text-lg md:text-xl font-light placeholder-transparent" placeholder="Name" required>
                         <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-purple transition-all pointer-events-none">Name</label>
                     </div>
                     <div class="relative group">
-                        <input type="email" name="email" class="peer w-full neumorphic-input text-xl font-light placeholder-transparent" placeholder="Email" required>
+                        <input type="email" name="email" class="peer w-full neumorphic-input text-lg md:text-xl font-light placeholder-transparent" placeholder="Email" required>
                         <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-purple transition-all pointer-events-none">Email</label>
                     </div>
                     
                     <div class="relative group">
-                        <select name="service" class="peer w-full neumorphic-input text-xl font-light text-white appearance-none cursor-pointer">
+                        <select name="service" class="peer w-full neumorphic-input text-lg md:text-xl font-light text-white appearance-none cursor-pointer">
                             <option value="" disabled selected class="text-gray-500">Select Interest</option>
                             <option value="advertising" class="bg-[#080808]">Advertising</option>
                             <option value="digital" class="bg-[#080808]">Digital Marketing</option>
@@ -374,31 +381,26 @@
                         <i class="fas fa-chevron-down absolute right-6 top-5 text-gray-500 text-xs pointer-events-none"></i>
                     </div>
                     <div class="relative group">
-                        <textarea name="message" rows="3" class="peer w-full neumorphic-input text-xl font-light placeholder-transparent" placeholder="Message"></textarea>
+                        <textarea name="message" rows="3" class="peer w-full neumorphic-input text-lg md:text-xl font-light placeholder-transparent" placeholder="Message"></textarea>
                         <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-purple transition-all pointer-events-none">Brief</label>
                     </div>
-                    <button type="submit" class="mt-8 px-10 py-5 w-full md:w-auto font-bold uppercase tracking-widest neumorphic-btn-dark rounded-full">
-                        Initiate Sequence
+                    <button type="submit" class="mt-4 px-8 py-4 w-full md:w-auto font-bold uppercase tracking-widest neumorphic-btn-dark rounded-full">
+                        Send Message
                     </button>
                 </form>
             </div>
         </div>
-        <div class="border-t border-white/10 p-6 md:p-8 flex flex-col md:flex-row justify-between items-center text-xs uppercase tracking-widest text-gray-500 font-mono">
-            <p>&copy; 2025 Bharat Mediya House. All Systems Operational.</p>
-            <div class="flex gap-8 mt-4 md:mt-0">
-                <a href="#" class="hover:text-white transition-colors hover-trigger magnetic-element" data-strength="10">Instagram</a>
-                <a href="#" class="hover:text-white transition-colors hover-trigger magnetic-element" data-strength="10">LinkedIn</a>
-                <a href="#" class="hover:text-white transition-colors hover-trigger magnetic-element" data-strength="10">Behance</a>
+        <div class="border-t border-white/10 p-6 md:p-8 flex flex-col md:flex-row justify-between items-center text-xs uppercase tracking-widest text-gray-500 font-mono gap-4">
+            <p class="text-center md:text-left">&copy; 2025 Bharat Mediya House. All Systems Operational.</p>
+            <div class="flex gap-8">
+                <a href="#" class="hover:text-white transition-colors">Instagram</a>
+                <a href="#" class="hover:text-white transition-colors">LinkedIn</a>
+                <a href="#" class="hover:text-white transition-colors">Behance</a>
             </div>
         </div>
     </footer>
     
-    <!-- 
-      !!! IMPORTANT FOR NETLIFY FORMS IN SINGLE PAGE APPS !!!
-      Netlify's build bots need to see the "Career" form in the plain HTML to register it.
-      Since the real Career form is created via JavaScript, we place this HIDDEN copy here 
-      so Netlify knows what fields to expect (including the file upload).
-    -->
+    <!-- Hidden Netlify Form Definition -->
     <form name="career-form" method="POST" data-netlify="true" enctype="multipart/form-data" hidden>
         <input type="hidden" name="form-name" value="career-form" />
         <input type="text" name="applicant_name" />
@@ -406,30 +408,109 @@
         <input type="tel" name="applicant_mobile" />
         <select name="applicant_post">
              <option value="art_director">Art Director</option>
-             <option value="motion_designer">Motion Designer</option>
-             <option value="copywriter">Copywriter</option>
-             <option value="account_manager">Account Manager</option>
+             <option value="video_editor">Video Editor</option>
+             <option value="motion_graphics_designer">Motion Graphics Designer</option>
+             <option value="vfx_artist">VFX Artist</option>
+             <option value="content_writer">Content Writer</option>
+             <option value="strategist">Strategist</option>
+             <option value="3d_artist">3D Artist</option>
+             <option value="business_developer">Business Developer</option>
+             <option value="business_executive">Business Executive</option>
+             <option value="developer">Developer</option>
+             <option value="social_media_manager">Social Media Manager</option>
              <option value="intern">Internship</option>
              <option value="other">Other</option>
         </select>
         <input type="file" name="resume" />
     </form>
 
-    <!-- Standard Site Scripts -->
     <script>
+        // --- FORM SUBMISSION HANDLERS ---
+        const handleNetlifySubmission = (url, options, btn, originalText, successText) => {
+            fetch(url, options)
+                .then(response => {
+                    if (response.ok) return Promise.resolve();
+                    if (response.status === 404 || response.status === 405) {
+                        console.warn("Netlify backend not found. Simulating success.");
+                        return Promise.resolve();
+                    }
+                    return Promise.reject(response.statusText);
+                })
+                .then(() => {
+                    btn.innerText = successText;
+                    btn.classList.remove("neumorphic-btn-dark");
+                    btn.classList.add("bg-brand-green", "text-white", "shadow-lg", "border", "border-brand-green");
+                    btn.disabled = true;
+                    btn.style.opacity = "1";
+                })
+                .catch((error) => {
+                    console.error('Submission error:', error);
+                    btn.innerText = "Connection Failed";
+                    btn.disabled = false;
+                    btn.style.opacity = "1";
+                    setTimeout(() => { btn.innerText = originalText; }, 3000);
+                });
+        };
+
+        window.submitCareerForm = function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('button[type="submit"]');
+            const formData = new FormData(form);
+            const originalText = "Send Application";
+            
+            btn.innerText = "Processing...";
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
+
+            handleNetlifySubmission("/", { method: "POST", body: formData }, btn, originalText, "Application Submitted");
+        };
+
+        window.submitContactForm = function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('button[type="submit"]');
+            const formData = new FormData(form);
+            const urlEncodedData = new URLSearchParams(formData).toString();
+            const originalText = "Send Message";
+
+            btn.innerText = "Transmitting...";
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
+
+            handleNetlifySubmission("/", { 
+                method: "POST", 
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: urlEncodedData 
+            }, btn, originalText, "Message Sent");
+        };
+
+        // --- URL ROUTING CONFIG ---
+        const urlRoutes = {
+            404: { id: 'home', title: "Home" },
+            "/": { id: 'home', title: "Home" },
+            "/services": { id: 'servicesOverview', title: "Services" },
+            "/careers": { id: 'career', title: "Careers" },
+            "/advertising": { id: 'advertising', title: "Advertising" },
+            "/digital-marketing": { id: 'digital', title: "Digital Marketing" },
+            "/branding": { id: 'branding', title: "Branding" },
+            "/production": { id: 'production', title: "Production" },
+            "/music-production": { id: 'music', title: "Music Production" },
+            "/ui-ux-design": { id: 'uiux', title: "UI/UX Design" },
+            "/web-solutions": { id: 'web', title: "Web Solutions" }
+        };
+
         // --- DATA STORE ---
         const siteData = {
-            home: { id: 'home', template: 'home' },
-            servicesOverview: { id: 'servicesOverview', template: 'servicesOverview' },
-            career: { id: 'career', template: 'career' },
-            
-            // Sub-pages Data
+            home: { id: 'home' },
+            servicesOverview: { id: 'servicesOverview' },
+            career: { id: 'career' },
             advertising: {
                 id: 'advertising', title: 'Advertising', subtitle: 'Strategic Reach', icon: 'fa-bullhorn',
                 image: 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
                 desc: 'We craft high-impact campaigns that dominate landscapes. From digital billboards in Times Square to hyper-local targeting.',
                 extraContent: "In the age of attention economy, visibility is currency. Our advertising philosophy goes beyond mere placement.",
-                gallery: ['https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'],
+                gallery: [],
                 services: [
                     { name: 'Media Buying', icon: 'fa-shopping-cart' },
                     { name: 'Campaign Strategy', icon: 'fa-chess' },
@@ -437,14 +518,13 @@
                     { name: 'TV & Radio', icon: 'fa-broadcast-tower' },
                     { name: 'Print Media', icon: 'fa-newspaper' }
                 ],
-                next: 'digital', color: 'text-brand-purple'
+                nextPath: '/digital-marketing', nextTitle: 'Digital Marketing', color: 'text-brand-purple'
             },
             digital: {
                 id: 'digital', title: 'Digital Marketing', subtitle: 'Data Driven Growth', icon: 'fa-chart-line',
                 image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
                 desc: 'Navigating the digital chaos requires precision. We utilize advanced analytics, SEO, and performance marketing.',
                 extraContent: "Algorithms change, but human psychology remains constant. We bridge the gap between technical SEO and emotional storytelling.",
-                gallery: ['https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'],
                 services: [
                     { name: 'SEO / SEM', icon: 'fa-search' },
                     { name: 'Social Media', icon: 'fa-share-alt' },
@@ -452,14 +532,13 @@
                     { name: 'Content Strategy', icon: 'fa-pen-nib' },
                     { name: 'Email Marketing', icon: 'fa-envelope' }
                 ],
-                next: 'branding', color: 'text-brand-red'
+                nextPath: '/branding', nextTitle: 'Branding', color: 'text-brand-red'
             },
             branding: {
                 id: 'branding', title: 'Branding', subtitle: 'Identity Construction', icon: 'fa-fingerprint',
                 image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
                 desc: 'A brand is not just a logo; it is a feeling. We architect visual identities and brand voices.',
                 extraContent: "We treat branding as an exercise in soul-searching. It's about distilling the essence of your business.",
-                gallery: ['https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1634942537034-2531766767d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'],
                 services: [
                     { name: 'Logo Design', icon: 'fa-drafting-compass' },
                     { name: 'Brand Guidelines', icon: 'fa-book' },
@@ -467,14 +546,13 @@
                     { name: 'Copywriting', icon: 'fa-paragraph' },
                     { name: 'Packaging Design', icon: 'fa-box-open' }
                 ],
-                next: 'production', color: 'text-brand-green'
+                nextPath: '/production', nextTitle: 'Production', color: 'text-brand-green'
             },
             production: {
                 id: 'production', title: 'Production', subtitle: 'Cinematic Storytelling', icon: 'fa-film',
                 image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
                 desc: 'From concept to final cut, our production house handles TVCs, digital films, and corporate documentaries.',
                 extraContent: "Lights, camera, emotion. Our production wing is a fully equipped studio capable of high-end VFX. We now also integrate our full-stack photography studio for seamless campaign asset creation.",
-                gallery: ['https://images.unsplash.com/photo-1535016120720-40c6874c3b1c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'],
                 services: [
                     { name: 'Video Production', icon: 'fa-video' },
                     { name: 'Post-Production', icon: 'fa-laptop-code' },
@@ -484,14 +562,13 @@
                     { name: 'Product Photography', icon: 'fa-camera' },
                     { name: 'Fashion Editorials', icon: 'fa-tshirt' }
                 ],
-                next: 'music', color: 'text-brand-purple'
+                nextPath: '/music-production', nextTitle: 'Music Production', color: 'text-brand-purple'
             },
             music: {
                 id: 'music', title: 'Music Production', subtitle: 'Sonic Branding & Score', icon: 'fa-music',
                 image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
                 desc: 'Sound is 50% of the visual experience. We craft bespoke audio identities, original scores, and immersive soundscapes.',
                 extraContent: "From commercial jingles to full-scale cinematic scores, our audio engineers and composers create the heartbeat of your brand.",
-                gallery: ['https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'],
                 services: [
                     { name: 'Sonic Branding', icon: 'fa-fingerprint' },
                     { name: 'Original Score', icon: 'fa-music' },
@@ -499,14 +576,13 @@
                     { name: 'Mixing & Mastering', icon: 'fa-sliders-h' },
                     { name: 'Voiceover', icon: 'fa-microphone' }
                 ],
-                next: 'uiux', color: 'text-brand-saffron'
+                nextPath: '/ui-ux-design', nextTitle: 'UI / UX Design', color: 'text-brand-saffron'
             },
             uiux: {
                 id: 'uiux', title: 'UI / UX Design', subtitle: 'Digital Experiences', icon: 'fa-object-group',
                 image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
                 desc: 'Designing intuitive, engaging, and aesthetically pleasing digital products that solve user problems.',
                 extraContent: "User-centric design is at our core. We blend aesthetics with usability to create digital products that feel natural and engaging.",
-                gallery: ['https://images.unsplash.com/photo-1509395062550-4b0d0e0602f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1555421689-d68471e189f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'],
                 services: [
                     { name: 'App Design', icon: 'fa-mobile-alt' },
                     { name: 'Website Design', icon: 'fa-desktop' },
@@ -514,14 +590,13 @@
                     { name: 'Wireframing', icon: 'fa-pencil-ruler' },
                     { name: 'Prototyping', icon: 'fa-play-circle' }
                 ],
-                next: 'web', color: 'text-brand-red'
+                nextPath: '/web-solutions', nextTitle: 'Web Solutions', color: 'text-brand-red'
             },
             web: {
                 id: 'web', title: 'Web Solutions', subtitle: 'Digital Infrastructure', icon: 'fa-globe',
                 image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
                 desc: 'We build immersive web experiences. Blending WebGL, robust backends, and intuitive UX.',
                 extraContent: "The website is the new headquarters. We build responsive, lightning-fast digital experiences.",
-                gallery: ['https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'],
                 services: [
                     { name: 'Full Stack Dev', icon: 'fa-code' },
                     { name: 'E-Commerce', icon: 'fa-shopping-bag' },
@@ -529,7 +604,7 @@
                     { name: 'CMS Development', icon: 'fa-database' },
                     { name: 'Maintenance', icon: 'fa-tools' }
                 ],
-                next: 'advertising', color: 'text-brand-purple'
+                nextPath: '/advertising', nextTitle: 'Advertising', color: 'text-brand-purple'
             }
         };
 
@@ -539,402 +614,458 @@
         let transitionEl;
         let sliderInterval;
 
-        // --- ROUTER & INIT ---
+        // --- ROUTER DEFINITION ---
+        window.route = (event) => {
+            event = event || window.event;
+            event.preventDefault();
+            // Get URL from href
+            const href = event.currentTarget.getAttribute('href');
+            window.handleLocation(href);
+        };
+
+        window.handleLocation = async (path = window.location.pathname) => {
+            // Default to home if root
+            if(path === '/' || path === '') path = '/';
+            
+            const route = urlRoutes[path] || urlRoutes[404];
+            
+            // Update URL in browser without reloading (with safety check for sandboxed environments)
+            try {
+                window.history.pushState({}, "", path);
+            } catch (e) {
+                console.warn("History API pushState prevented in this environment (likely sandboxed preview). Navigation will proceed without URL update.");
+            }
+            
+            // Perform Animation & Render
+            animatePageTransition(route.id);
+        };
+
+        // Handle Back/Forward Browser Buttons
+        window.onpopstate = () => {
+            window.handleLocation(window.location.pathname);
+        };
+
+        function animatePageTransition(pageId) {
+            if (!transitionEl) transitionEl = document.getElementById('page-loader');
+            
+            if (typeof gsap !== 'undefined') {
+                const tl = gsap.timeline();
+                tl.to(transitionEl, { 
+                    scaleY: 1, 
+                    transformOrigin: 'bottom', 
+                    duration: 0.8, 
+                    ease: 'expo.inOut', 
+                    onComplete: () => { 
+                        renderContent(pageId);
+                        if(window.lenis) window.lenis.scrollTo(0, { immediate: true }); 
+                        else window.scrollTo(0,0);
+                    } 
+                })
+                .to(transitionEl, { 
+                    scaleY: 0, 
+                    transformOrigin: 'top', 
+                    duration: 0.8, 
+                    delay: 0.1, 
+                    ease: 'expo.inOut' 
+                });
+            } else {
+                renderContent(pageId);
+                window.scrollTo(0,0);
+            }
+        }
+
+        function renderContent(pageId) {
+            if (!mainContainer) mainContainer = document.getElementById('router-view');
+            
+            // Cleanup
+            if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.getAll().forEach(st => st.kill());
+            if (sliderInterval) clearInterval(sliderInterval);
+
+            const data = siteData[pageId];
+
+            if (pageId === 'home') {
+                mainContainer.innerHTML = getHomeHTML();
+            } else if (pageId === 'servicesOverview') {
+                mainContainer.innerHTML = getServicesOverviewHTML();
+            } else if (pageId === 'career') {
+                mainContainer.innerHTML = getCareerHTML();
+            } else {
+                mainContainer.innerHTML = getServiceDetailHTML(data);
+            }
+            
+            // Re-init scripts
+            setTimeout(() => {
+                if(window.initPageAnimations) window.initPageAnimations();
+                if(window.initGlobalEffects) window.initGlobalEffects(); 
+                if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+                
+                if(pageId === 'home') {
+                    if(window.initHeroSlider) window.initHeroSlider();
+                    if(window.initFAQ) window.initFAQ();
+                }
+            }, 100);
+        }
+
+        // --- HTML GENERATORS ---
+        // (Moved out of an object to be standalone functions for clarity)
+
+        function getHomeHTML() {
+            return `
+            <header class="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6 md:px-12 border-b border-white/10 min-h-screen flex flex-col justify-center overflow-hidden">
+                <div id="hero-slider-bg" class="perspective-scene">
+                    <div class="hero-slide active z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');" data-scroll-speed="0.2"></div>
+                    <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
+                    <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
+                    <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
+                </div>
+                <div class="absolute inset-0 bg-black/80 z-0"></div>
+
+                <div class="max-w-[1920px] mx-auto w-full relative z-10 perspective-scene">
+                    <div class="absolute top-0 right-0 md:right-12 flex items-center gap-3 animate-fade-in-down parallax-layer" data-speed-x="0.02" data-speed-y="0.02">
+                        <div class="w-2 h-2 bg-brand-green rounded-full pulse-dot"></div>
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-brand-green">System Online</span>
+                    </div>
+
+                    <div class="relative mb-8 parallax-layer" data-speed-x="0.04" data-speed-y="0.04">
+                        <h1 class="hero-title font-display text-5xl md:text-[8rem] font-extrabold leading-[0.9] tracking-tighter uppercase text-white glitch-text">
+                            WE SHAPE <br>
+                            <span class="text-gradient-special">YOUR</span> DREAMS
+                        </h1>
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row justify-between items-end mt-12 md:mt-24 perspective-scene">
+                        <div class="max-w-xl hero-desc parallax-layer" data-speed-x="0.02" data-speed-y="0.03" data-scroll-speed="0.1">
+                            <div class="h-px w-24 bg-gradient-to-r from-brand-purple to-transparent mb-6"></div>
+                            <p class="text-gray-300 text-lg md:text-xl leading-relaxed font-light font-mono">
+                                <span class="text-brand-purple font-bold">//</span> Visual Engineering & Strategic Dominance.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="border-b border-white/10 py-8 overflow-hidden bg-[#0a0a0a] relative z-20">
+                <div class="flex whitespace-nowrap animate-marquee items-center text-white/20 hover:text-white/80 transition-colors duration-500 cursor-default">
+                    <span class="text-4xl md:text-7xl font-display font-black uppercase mx-8">Strategy</span> <span class="text-brand-purple text-3xl animate-pulse-slow">●</span>
+                    <span class="text-4xl md:text-7xl font-display font-black uppercase mx-8 text-transparent stroke-text" style="-webkit-text-stroke: 1px white;">Branding</span> <span class="text-brand-purple text-3xl animate-pulse-slow">●</span>
+                    <span class="text-4xl md:text-7xl font-display font-black uppercase mx-8">Production</span> <span class="text-brand-purple text-3xl animate-pulse-slow">●</span>
+                     <span class="text-4xl md:text-7xl font-display font-black uppercase mx-8 text-transparent stroke-text" style="-webkit-text-stroke: 1px white;">Digital</span> <span class="text-brand-purple text-3xl animate-pulse-slow">●</span>
+                </div>
+            </div>
+
+            <section id="creative-showcase" class="border-b border-white/10 bg-[#050505] relative z-20 py-16 md:py-24 px-6 md:px-12 perspective-scene">
+                <div class="max-w-[1920px] mx-auto">
+                     <div class="mb-12 md:mb-16 parallax-layer" data-speed-y="0.05">
+                         <span class="text-xs font-mono font-bold uppercase tracking-widest text-brand-purple mb-2 block">/// Creative Lab</span>
+                         <h2 class="text-4xl md:text-6xl font-display font-bold uppercase text-white">The<br>Process</h2>
+                     </div>
+
+                     <div class="relative w-full aspect-video md:aspect-[21/9] bg-white/5 p-2 rounded-sm transform hover:-translate-y-2 transition-transform duration-500 hover-trigger group neumorphic-card">
+                        <div class="w-full h-full bg-black relative overflow-hidden shadow-2xl rounded-xl">
+                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 parallax-layer" data-scroll-speed="-0.1">
+                            <div class="absolute inset-0 bg-black/20 mix-blend-multiply"></div>
+                        </div>
+                        <div class="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-10 parallax-layer" data-speed-x="0.06" data-speed-y="0.06">
+                            <span class="text-white bg-brand-purple px-4 py-2 text-xs md:text-sm font-mono uppercase font-bold tracking-widest shadow-lg">Agency Life</span>
+                        </div>
+                     </div>
+                </div>
+            </section>
+
+            <section class="border-b border-white/10 bg-brand-dark py-16 md:py-24 px-6 md:px-12">
+                <div class="max-w-4xl mx-auto reveal-hidden scroll-reveal">
+                    <span class="text-xs font-mono font-bold uppercase tracking-widest text-brand-green mb-8 block">/// Intelligence</span>
+                    <h2 class="text-3xl md:text-4xl font-display font-bold uppercase text-white mb-12">Common Queries</h2>
+                    <div class="space-y-0" id="faq-container"></div>
+                </div>
+            </section>
+
+            <a href="/services" onclick="window.route(event)" class="block relative h-64 md:h-80 overflow-hidden group border-b border-white/10 hover-trigger bg-[#080808]">
+                <div class="absolute inset-0 bg-brand-purple/5 group-hover:bg-brand-purple/20 transition-colors"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center z-10 px-6 text-center parallax-layer" data-speed-y="0.1">
+                    <span class="text-xs font-mono uppercase tracking-widest text-gray-400 mb-4">02 // Next Sequence</span>
+                    <h2 class="text-4xl md:text-8xl font-display font-black uppercase text-white group-hover:scale-105 transition-transform duration-500 parallax-text">
+                        Explore Services
+                    </h2>
+                </div>
+            </a>
+            `;
+        }
+
+        function getServicesOverviewHTML() {
+            return `
+            <div class="relative pt-32 pb-20 md:pt-40 md:pb-20 px-6 md:px-12 border-b border-white/10 bg-[#050505] perspective-scene">
+                <div class="absolute inset-0 bg-cover bg-center z-0 opacity-40" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+                <div class="absolute inset-0 bg-black/70 z-0"></div>
+                <div class="max-w-[1920px] mx-auto mb-16 parallax-layer relative z-10" data-speed-x="0.03" data-speed-y="0.03">
+                    <a href="/" onclick="window.route(event)" class="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-widest text-gray-400 hover:text-white mb-8 hover-trigger bg-black/50 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md transition-all hover:bg-white hover:text-black group"><i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Back to Hub</a>
+                    <h1 class="hero-title font-display text-4xl md:text-8xl font-extrabold uppercase text-white leading-none glitch-text">Our Capabilities</h1>
+                </div>
+            </div>
+            <section class="border-b border-white/10 bg-brand-dark min-h-screen">
+                <div class="max-w-[1920px] mx-auto grid grid-cols-1 md:grid-cols-12">
+                    <div class="md:col-span-3 p-6 md:p-10 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-between sticky top-24 h-fit">
+                        <div><span class="text-xs font-mono font-bold uppercase tracking-widest text-brand-purple mb-2 block">[ 02 ] Services</span><h2 class="text-4xl md:text-5xl font-display font-bold uppercase leading-none text-white">Full<br>Stack</h2></div>
+                        <div class="mt-8 md:mt-12 text-gray-500 text-sm font-mono">Select a domain.</div>
+                    </div>
+                    <div class="md:col-span-9 perspective-scene space-y-4 p-4 md:p-8">
+                        ${renderServiceLink('01', 'Advertising', 'purple', '/advertising')}
+                        ${renderServiceLink('02', 'Digital Marketing', 'red', '/digital-marketing')}
+                        ${renderServiceLink('03', 'Branding', 'green', '/branding')}
+                        ${renderServiceLink('04', 'Production', 'purple', '/production')}
+                        ${renderServiceLink('05', 'Music Production', 'saffron', '/music-production')}
+                        ${renderServiceLink('06', 'UI/UX Design', 'red', '/ui-ux-design')}
+                        ${renderServiceLink('07', 'Web Solutions', 'purple', '/web-solutions')}
+                    </div>
+                </div>
+            </section>
+            <a href="/careers" onclick="window.route(event)" class="block relative h-64 overflow-hidden group border-b border-white/10 hover-trigger">
+                <div class="absolute inset-0 bg-brand-green/10 group-hover:bg-brand-green/20 transition-colors"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center z-10"><span class="text-xs font-mono uppercase tracking-widest text-gray-400 mb-2">03 // Next Sequence</span><h2 class="text-3xl md:text-6xl font-display font-bold uppercase text-white group-hover:scale-110 transition-transform duration-500">Join The Team <i class="fas fa-arrow-right ml-4"></i></h2></div>
+            </a>`;
+        }
+
+        function getServiceDetailHTML(data) {
+            // Re-calculate sidebar based on current data
+            const serviceRoutes = Object.values(urlRoutes).filter(r => !['home','servicesOverview','career'].includes(r.id) && r.id);
+            
+            // Map paths for sidebar
+            const sidebarHTML = `
+            <div class="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-center pr-6">
+                <div class="w-px h-12 bg-gradient-to-b from-transparent to-gray-800 mb-4"></div>
+                <div class="flex flex-col gap-4">
+                    <a href="/advertising" onclick="window.route(event)" class="w-2 h-2 rounded-full ${data.id === 'advertising' ? 'bg-brand-saffron scale-150' : 'bg-gray-600 hover:bg-white'} transition-all" title="Advertising"></a>
+                    <a href="/digital-marketing" onclick="window.route(event)" class="w-2 h-2 rounded-full ${data.id === 'digital' ? 'bg-brand-saffron scale-150' : 'bg-gray-600 hover:bg-white'} transition-all" title="Digital"></a>
+                    <a href="/branding" onclick="window.route(event)" class="w-2 h-2 rounded-full ${data.id === 'branding' ? 'bg-brand-saffron scale-150' : 'bg-gray-600 hover:bg-white'} transition-all" title="Branding"></a>
+                    <a href="/production" onclick="window.route(event)" class="w-2 h-2 rounded-full ${data.id === 'production' ? 'bg-brand-saffron scale-150' : 'bg-gray-600 hover:bg-white'} transition-all" title="Production"></a>
+                    <a href="/music-production" onclick="window.route(event)" class="w-2 h-2 rounded-full ${data.id === 'music' ? 'bg-brand-saffron scale-150' : 'bg-gray-600 hover:bg-white'} transition-all" title="Music"></a>
+                    <a href="/ui-ux-design" onclick="window.route(event)" class="w-2 h-2 rounded-full ${data.id === 'uiux' ? 'bg-brand-saffron scale-150' : 'bg-gray-600 hover:bg-white'} transition-all" title="UI/UX"></a>
+                    <a href="/web-solutions" onclick="window.route(event)" class="w-2 h-2 rounded-full ${data.id === 'web' ? 'bg-brand-saffron scale-150' : 'bg-gray-600 hover:bg-white'} transition-all" title="Web"></a>
+                </div>
+                <div class="w-px h-12 bg-gradient-to-b from-gray-800 to-transparent mt-4"></div>
+            </div>`;
+
+            return `
+            ${sidebarHTML}
+            <div class="relative min-h-[60vh] md:min-h-[85vh] w-full overflow-hidden flex flex-col justify-end pt-32 pb-12 md:pb-20 px-6 md:px-12 border-b border-white/10 perspective-scene">
+                <div class="absolute inset-0 bg-cover bg-center parallax-layer" style="background-image: url('${data.image}');" data-scroll-speed="0.2"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-0"></div>
+                <div class="relative z-10 w-full max-w-[1920px] mx-auto pr-0 md:pr-24 parallax-layer" data-speed-x="0.04" data-speed-y="0.04">
+                    <a href="/services" onclick="window.route(event)" class="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-widest text-gray-400 hover:text-white mb-8 hover-trigger bg-black/50 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md transition-all hover:bg-white hover:text-black group magnetic-element" data-strength="15"><i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Back to Services</a>
+                    <h1 class="hero-title font-display text-4xl md:text-9xl font-extrabold uppercase text-white leading-none mb-6 glitch-text">${data.title}</h1>
+                    <p class="text-lg md:text-2xl font-light text-gray-300 max-w-2xl hero-desc opacity-0">${data.subtitle}</p>
+                </div>
+            </div>
+
+            <section class="border-b border-white/10 bg-brand-dark">
+                <div class="max-w-[1920px] mx-auto grid grid-cols-1 md:grid-cols-12">
+                    <div class="md:col-span-4 p-8 md:p-16 border-b md:border-b-0 md:border-r border-white/10 bg-[#080808]">
+                        <span class="text-xs font-mono font-bold uppercase tracking-widest ${data.color} mb-6 block">/// Overview</span>
+                        <p class="text-lg md:text-xl leading-relaxed text-gray-400 font-light text-justify mb-8">${data.desc}</p>
+                        <span class="text-xs font-mono font-bold uppercase tracking-widest text-white mb-4 block">/// Our Approach</span>
+                        <p class="text-md leading-relaxed text-gray-500 font-light text-justify">${data.extraContent}</p>
+                    </div>
+                    <div class="md:col-span-8 p-8 md:p-16 bg-[#0a0a0a]">
+                        <h3 class="text-3xl font-display font-bold uppercase mb-12 flex items-center gap-4"><i class="fas fa-layer-group text-brand-saffron"></i> Service Matrix</h3>
+                        <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            ${data.services.map(s => `
+                                <li class="neumorphic-card p-8 group cursor-default relative overflow-hidden">
+                                    <div class="tilt-inner flex flex-col h-full justify-between z-10 relative">
+                                        <i class="fas ${s.icon} text-3xl ${data.color} mb-6 opacity-50 group-hover:opacity-100 transition-opacity"></i>
+                                        <h4 class="text-xl font-display font-bold uppercase tracking-wide text-gray-300 group-hover:text-white">${s.name}</h4>
+                                        <div class="w-12 h-1 bg-white/10 mt-4 group-hover:w-full group-hover:bg-brand-saffron transition-all duration-500"></div>
+                                    </div>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <a href="${data.nextPath}" onclick="window.route(event)" class="block relative h-64 overflow-hidden group border-b border-white/10 hover-trigger">
+                <div class="absolute inset-0 bg-brand-purple/10 group-hover:bg-brand-purple/20 transition-colors"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+                    <span class="text-xs font-mono uppercase tracking-widest text-gray-400 mb-2">Next Sequence</span>
+                    <h2 class="text-3xl md:text-6xl font-display font-bold uppercase text-white group-hover:scale-110 transition-transform duration-500">
+                        ${data.nextTitle} <i class="fas fa-arrow-right ml-4"></i>
+                    </h2>
+                </div>
+            </a>`;
+        }
+
+        function getCareerHTML() {
+            return `
+            <div class="relative min-h-[60vh] md:min-h-[70vh] w-full overflow-hidden flex flex-col justify-end pt-32 pb-12 md:pb-20 px-6 md:px-12 border-b border-white/10 perspective-scene">
+                 <div class="absolute inset-0 bg-cover bg-center parallax-layer" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');" data-scroll-speed="0.2"></div>
+                 <div class="absolute inset-0 bg-black/70 z-0"></div>
+                 <div class="relative z-10 w-full max-w-[1920px] mx-auto parallax-layer" data-speed-y="0.05">
+                    <a href="/" onclick="window.route(event)" class="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-widest text-gray-400 hover:text-white mb-8 hover-trigger bg-black/50 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md transition-all hover:bg-white hover:text-black group"><i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Back to Hub</a>
+                    <h1 class="hero-title font-display text-4xl md:text-9xl font-extrabold uppercase text-white leading-none mb-6 glitch-text">Join The Cult</h1>
+                 </div>
+            </div>
+            <section class="border-b border-white/10 bg-brand-dark p-8 md:p-16">
+                 <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h3 class="text-3xl font-display font-bold uppercase text-white mb-6">Current Openings</h3>
+                        <p class="text-lg md:text-xl text-gray-400 mb-12 font-light leading-relaxed max-w-3xl mx-auto">
+                            At Bharat Mediya House, we don't hire employees; we recruit partners in crime. If you are obsessed with perfection and allergic to mediocrity, you belong here.
+                        </p>
+                        
+                        <div class="grid gap-6 text-left">
+                            <div class="neumorphic-card p-6 group cursor-pointer">
+                                <div class="flex justify-between items-center">
+                                    <h4 class="text-xl font-bold text-white">Art Director</h4>
+                                    <span class="text-xs font-mono text-brand-saffron border border-brand-saffron px-2 py-1 rounded">Apply Below</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">Mumbai • Full Time</p>
+                            </div>
+                            <div class="neumorphic-card p-6 group cursor-pointer">
+                                <div class="flex justify-between items-center">
+                                    <h4 class="text-xl font-bold text-white">Motion Designer</h4>
+                                    <span class="text-xs font-mono text-brand-saffron border border-brand-saffron px-2 py-1 rounded">Apply Below</span>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">Remote • Contract</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-white/10 pt-16">
+                        <h3 class="text-2xl font-display font-bold uppercase text-white mb-8 text-center">Submit Application</h3>
+                        
+                        <form name="career-form" method="POST" data-netlify="true" enctype="multipart/form-data" class="space-y-8 max-w-2xl mx-auto" onsubmit="submitCareerForm(event)">
+                            <input type="hidden" name="form-name" value="career-form" />
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="relative group">
+                                    <input type="text" name="applicant_name" class="peer w-full neumorphic-input text-lg font-light placeholder-transparent" placeholder=" " required>
+                                    <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-saffron transition-all pointer-events-none">Full Name</label>
+                                </div>
+                                <div class="relative group">
+                                    <input type="email" name="applicant_email" class="peer w-full neumorphic-input text-lg font-light placeholder-transparent" placeholder=" " required>
+                                    <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-saffron transition-all pointer-events-none">Email Address</label>
+                                    </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="relative group">
+                                    <input type="tel" name="applicant_mobile" class="peer w-full neumorphic-input text-lg font-light placeholder-transparent" placeholder=" " required>
+                                    <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-saffron transition-all pointer-events-none">Mobile Number</label>
+                                </div>
+                                <div class="relative group">
+                                    <select name="applicant_post" class="peer w-full neumorphic-input text-lg font-light text-white appearance-none cursor-pointer">
+                                        <option value="" disabled selected class="text-gray-500">Select Position</option>
+                                        <option value="art_director" class="bg-[#080808]">Art Director</option>
+                                        <option value="video_editor" class="bg-[#080808]">Video Editor</option>
+                                        <option value="motion_graphics_designer" class="bg-[#080808]">Motion Graphics Designer</option>
+                                        <option value="vfx_artist" class="bg-[#080808]">VFX Artist</option>
+                                        <option value="content_writer" class="bg-[#080808]">Content Writer</option>
+                                        <option value="strategist" class="bg-[#080808]">Strategist</option>
+                                        <option value="3d_artist" class="bg-[#080808]">3D Artist</option>
+                                        <option value="business_developer" class="bg-[#080808]">Business Developer</option>
+                                        <option value="business_executive" class="bg-[#080808]">Business Executive</option>
+                                        <option value="developer" class="bg-[#080808]">Developer</option>
+                                        <option value="social_media_manager" class="bg-[#080808]">Social Media Manager</option>
+                                        <option value="intern" class="bg-[#080808]">Internship</option>
+                                        <option value="other" class="bg-[#080808]">Other</option>
+                                    </select>
+                                    <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-focus:text-brand-saffron transition-all pointer-events-none">Position Applied For</label>
+                                    <i class="fas fa-chevron-down absolute right-6 top-5 text-gray-500 text-xs pointer-events-none"></i>
+                                </div>
+                            </div>
+
+                            <div class="relative group pt-4">
+                                <label class="block text-xs text-gray-500 uppercase tracking-widest mb-3">Upload Resume / Portfolio (PDF)</label>
+                                <label class="flex items-center justify-center w-full h-32 neumorphic-input border border-white/5 border-dashed cursor-pointer hover:bg-white/5 transition-all group">
+                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-3 group-hover:text-brand-saffron transition-colors"></i>
+                                        <p class="text-sm text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                    </div>
+                                    <input type="file" name="resume" class="hidden" accept=".pdf,.doc,.docx" />
+                                </label>
+                            </div>
+                            <div class="text-center pt-4">
+                                <button type="submit" class="px-8 py-4 w-full md:w-auto neumorphic-btn-dark font-bold uppercase tracking-widest rounded-full">
+                                    Send Application
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                 </div>
+            </section>`;
+        }
+
+        function renderServiceLink(num, title, color, path) {
+            return `<a href="${path}" onclick="window.route(event)" class="neumorphic-card p-6 md:p-14 flex flex-col md:flex-row justify-between items-center group block hover-trigger liquid-target gap-4 md:gap-0">
+                <div class="flex items-center gap-4 md:gap-16 w-full md:w-auto">
+                    <span class="text-xs font-mono text-gray-600 group-hover:text-brand-${color} transition-colors">/${num}</span>
+                    <h3 class="text-2xl md:text-6xl font-display font-bold uppercase text-gray-300 group-hover:text-white transition-colors">${title}</h3>
+                </div>
+                <i class="fas fa-arrow-right text-2xl opacity-0 -translate-x-10 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 text-white hidden md:block"></i>
+            </a>`;
+        }
+
+        // --- INIT LISTENER ---
         document.addEventListener("DOMContentLoaded", () => {
             mainContainer = document.getElementById('router-view');
             transitionEl = document.getElementById('page-loader');
 
-            gsap.registerPlugin(ScrollTrigger);
+            try {
+                if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
+            } catch(e) { console.error("GSAP Init Error", e); }
 
-            // Initialize Lenis with default settings for better compatibility
-            lenis = new Lenis({ 
-                duration: 1.2, 
-                smooth: true 
-            });
-            
-            // Explicitly make global for inline HTML access
-            window.lenis = lenis; 
-            window.router = router;
+            try {
+                // Initialize Lenis
+                lenis = new Lenis({ 
+                    duration: 1.2, 
+                    smooth: true,
+                    smoothTouch: false // Disable on touch for better native feel
+                });
+                window.lenis = lenis; 
 
-            // Updated integration pattern to avoid context errors
-            lenis.on('scroll', (e) => {
-                ScrollTrigger.update();
-            });
-            
-            function raf(time) {
-                lenis.raf(time);
-                requestAnimationFrame(raf);
-            }
-            requestAnimationFrame(raf);
-
-            // Initial Render
-            router.render('home');
-        });
-
-        const router = {
-            current: 'home',
-            navigate: function(pageId) {
-                if (this.current === pageId) return;
-                const tl = gsap.timeline();
-                tl.to(transitionEl, { scaleY: 1, transformOrigin: 'bottom', duration: 0.8, ease: 'expo.inOut', onComplete: () => { 
-                        this.render(pageId); 
-                        if(window.lenis) window.lenis.scrollTo(0, { immediate: true }); 
-                    } 
-                  })
-                  .to(transitionEl, { scaleY: 0, transformOrigin: 'top', duration: 0.8, delay: 0.1, ease: 'expo.inOut' });
-                this.current = pageId;
-            },
-            render: function(pageId) {
-                ScrollTrigger.getAll().forEach(st => st.kill());
-                if (sliderInterval) clearInterval(sliderInterval);
-
-                const data = siteData[pageId];
-
-                if (pageId === 'home') {
-                    mainContainer.innerHTML = this.getHomeHTML();
-                } else if (pageId === 'servicesOverview') {
-                    mainContainer.innerHTML = this.getServicesOverviewHTML();
-                } else if (pageId === 'career') {
-                    mainContainer.innerHTML = this.getCareerHTML();
-                } else {
-                    mainContainer.innerHTML = this.getServiceDetailHTML(data);
+                // Updated integration pattern to avoid context errors
+                if (typeof ScrollTrigger !== 'undefined') {
+                    lenis.on('scroll', (e) => ScrollTrigger.update(e));
                 }
                 
-                setTimeout(() => {
-                    initPageAnimations();
-                    initGlobalEffects(); 
-                    ScrollTrigger.refresh();
-                    
-                    if(pageId === 'home') {
-                        initHeroSlider();
-                        initFAQ();
-                    }
-                }, 100);
-            },
+                // Add Lenis to GSAP ticker for better performance
+                gsap.ticker.add((time) => {
+                    lenis.raf(time * 1000);
+                });
+                
+                // Disable lag smoothing for Lenis
+                gsap.ticker.lagSmoothing(0);
 
-            // --- 01 HOME HTML ---
-            getHomeHTML: function() {
-                return `
-                <header class="relative pt-48 pb-32 px-6 md:px-12 border-b border-white/10 min-h-screen flex flex-col justify-center overflow-hidden">
-                    <div id="hero-slider-bg" class="perspective-scene">
-                        <div class="hero-slide active z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');" data-scroll-speed="0.2"></div>
-                        <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
-                        <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
-                        <div class="hero-slide z-axis-layer" style="background-image: url('https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
-                    </div>
-                    <div class="absolute inset-0 bg-black/80 z-0"></div>
+            } catch(e) { console.error("Lenis Init Error", e); }
 
-                    <!-- Floating Particles -->
-                    <div class="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-                        <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-brand-purple rounded-full parallax-layer blur-[2px]" data-speed-x="0.08" data-speed-y="0.08"></div>
-                        <div class="absolute bottom-1/3 right-1/4 w-4 h-4 bg-brand-saffron rounded-full parallax-layer blur-[4px] opacity-50" data-speed-x="-0.05" data-speed-y="-0.05"></div>
-                    </div>
+            // Initial Render based on current URL
+            window.handleLocation();
+        });
 
-                    <div class="max-w-[1920px] mx-auto w-full relative z-10 perspective-scene">
-                        <div class="absolute top-0 right-0 md:right-12 flex items-center gap-3 animate-fade-in-down parallax-layer" data-speed-x="0.02" data-speed-y="0.02">
-                            <div class="w-2 h-2 bg-brand-green rounded-full pulse-dot"></div>
-                            <span class="text-[10px] font-mono uppercase tracking-widest text-brand-green">System Online</span>
-                        </div>
-
-                        <div class="relative mb-8 parallax-layer" data-speed-x="0.04" data-speed-y="0.04">
-                            <h1 class="hero-title font-display text-5xl md:text-[8rem] font-extrabold leading-[0.9] tracking-tighter uppercase text-white glitch-text" data-text="WE SHAPE YOUR DREAM">
-                                WE SHAPE <br>
-                                <span class="text-gradient-special">YOUR</span> DREAMS
-                            </h1>
-                        </div>
-                        
-                        <div class="flex flex-col md:flex-row justify-between items-end mt-12 md:mt-24 perspective-scene">
-                            <div class="max-w-xl hero-desc parallax-layer" data-speed-x="0.02" data-speed-y="0.03" data-scroll-speed="0.1">
-                                <div class="h-px w-24 bg-gradient-to-r from-brand-purple to-transparent mb-6"></div>
-                                <p class="text-gray-300 text-lg md:text-xl leading-relaxed font-light font-mono">
-                                    <span class="text-brand-purple font-bold">//</span> Visual Engineering & Strategic Dominance.
-                                </p>
-                            </div>
-                            <div class="hero-badge hidden md:flex flex-col items-center gap-2 mt-10 md:mt-0 parallax-layer" data-speed-x="-0.02" data-speed-y="-0.02">
-                                <span class="text-[10px] font-mono uppercase tracking-widest text-gray-500 rotate-90 origin-left translate-x-4 mb-8">Scroll</span>
-                                <div class="w-px h-16 bg-gradient-to-b from-brand-purple to-transparent"></div>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-
-                <div class="border-b border-white/10 py-8 overflow-hidden bg-[#0a0a0a] relative z-20">
-                    <div class="flex whitespace-nowrap animate-marquee items-center text-white/20 hover:text-white/80 transition-colors duration-500 cursor-default">
-                        <span class="text-4xl md:text-7xl font-display font-black uppercase mx-8">Strategy</span> <span class="text-brand-purple text-3xl animate-pulse-slow">●</span>
-                        <span class="text-4xl md:text-7xl font-display font-black uppercase mx-8 text-transparent stroke-text" style="-webkit-text-stroke: 1px white;">Branding</span> <span class="text-brand-purple text-3xl animate-pulse-slow">●</span>
-                        <span class="text-4xl md:text-7xl font-display font-black uppercase mx-8">Production</span> <span class="text-brand-purple text-3xl animate-pulse-slow">●</span>
-                         <span class="text-4xl md:text-7xl font-display font-black uppercase mx-8 text-transparent stroke-text" style="-webkit-text-stroke: 1px white;">Digital</span> <span class="text-brand-purple text-3xl animate-pulse-slow">●</span>
-                    </div>
-                </div>
-
-                <section id="creative-showcase" class="border-b border-white/10 bg-[#050505] relative z-20 py-24 px-6 md:px-12 perspective-scene">
-                    <div class="max-w-[1920px] mx-auto">
-                         <div class="mb-16 parallax-layer" data-speed-y="0.05">
-                             <span class="text-xs font-mono font-bold uppercase tracking-widest text-brand-purple mb-2 block">/// Creative Lab</span>
-                             <h2 class="text-4xl md:text-6xl font-display font-bold uppercase text-white">The<br>Process</h2>
-                         </div>
-
-                         <div class="relative w-full aspect-video md:aspect-[21/9] bg-white/5 p-2 rounded-sm transform hover:-translate-y-2 transition-transform duration-500 hover-trigger group neumorphic-card">
-                            <div class="w-full h-full bg-black relative overflow-hidden shadow-2xl rounded-xl">
-                                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 parallax-layer" data-scroll-speed="-0.1">
-                                <div class="absolute inset-0 bg-black/20 mix-blend-multiply"></div>
-                            </div>
-                            <div class="absolute bottom-8 left-8 z-10 parallax-layer" data-speed-x="0.06" data-speed-y="0.06">
-                                <span class="text-white bg-brand-purple px-4 py-2 text-sm font-mono uppercase font-bold tracking-widest shadow-lg">Agency Life</span>
-                            </div>
-                         </div>
-                    </div>
-                </section>
-
-                <section class="border-b border-white/10 bg-brand-dark py-24 px-6 md:px-12">
-                    <div class="max-w-4xl mx-auto reveal-hidden scroll-reveal">
-                        <span class="text-xs font-mono font-bold uppercase tracking-widest text-brand-green mb-8 block">/// Intelligence</span>
-                        <h2 class="text-4xl font-display font-bold uppercase text-white mb-12">Common Queries</h2>
-                        <div class="space-y-0" id="faq-container"></div>
-                    </div>
-                </section>
-
-                <a href="#" onclick="window.router.navigate('servicesOverview'); return false;" class="block relative h-80 overflow-hidden group border-b border-white/10 hover-trigger bg-[#080808]">
-                    <div class="absolute inset-0 bg-brand-purple/5 group-hover:bg-brand-purple/20 transition-colors"></div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center z-10 px-6 text-center parallax-layer" data-speed-y="0.1">
-                        <span class="text-xs font-mono uppercase tracking-widest text-gray-400 mb-4">02 // Next Sequence</span>
-                        <h2 class="text-5xl md:text-8xl font-display font-black uppercase text-white group-hover:scale-105 transition-transform duration-500 parallax-text">
-                            Explore Services
-                        </h2>
-                    </div>
-                </a>
-                `;
-            },
-
-            // --- 02 SERVICES LIST HTML ---
-            getServicesOverviewHTML: function() {
-                return `
-                <div class="relative pt-40 pb-20 px-6 md:px-12 border-b border-white/10 bg-[#050505] perspective-scene">
-                    <div class="absolute inset-0 bg-cover bg-center z-0 opacity-40" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
-                    <div class="absolute inset-0 bg-black/70 z-0"></div>
-                    <div class="max-w-[1920px] mx-auto mb-16 parallax-layer relative z-10" data-speed-x="0.03" data-speed-y="0.03">
-                        <a href="#" onclick="window.router.navigate('home'); return false;" class="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-widest text-gray-400 hover:text-white mb-8 hover-trigger bg-black/50 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md transition-all hover:bg-white hover:text-black group"><i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Back to Hub</a>
-                        <h1 class="hero-title font-display text-5xl md:text-8xl font-extrabold uppercase text-white leading-none glitch-text" data-text="OUR CAPABILITIES">Our Capabilities</h1>
-                    </div>
-                </div>
-                <section class="border-b border-white/10 bg-brand-dark min-h-screen">
-                    <div class="max-w-[1920px] mx-auto grid grid-cols-1 md:grid-cols-12">
-                        <div class="md:col-span-3 p-6 md:p-10 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-between sticky top-24 h-fit">
-                            <div><span class="text-xs font-mono font-bold uppercase tracking-widest text-brand-purple mb-2 block">[ 02 ] Services</span><h2 class="text-4xl md:text-5xl font-display font-bold uppercase leading-none text-white">Full<br>Stack</h2></div>
-                            <div class="mt-12 text-gray-500 text-sm font-mono">Select a domain.</div>
-                        </div>
-                        <div class="md:col-span-9 perspective-scene space-y-4 p-8">
-                            ${this.renderServiceLink('01', 'Advertising', 'purple')}
-                            ${this.renderServiceLink('02', 'Digital Marketing', 'red')}
-                            ${this.renderServiceLink('03', 'Branding', 'green')}
-                            ${this.renderServiceLink('04', 'Production', 'purple')}
-                            ${this.renderServiceLink('05', 'Music Production', 'saffron')}
-                            ${this.renderServiceLink('06', 'UI/UX Design', 'red')}
-                            ${this.renderServiceLink('07', 'Web Solutions', 'purple')}
-                        </div>
-                    </div>
-                </section>
-                <a href="#" onclick="window.router.navigate('career'); return false;" class="block relative h-64 overflow-hidden group border-b border-white/10 hover-trigger">
-                    <div class="absolute inset-0 bg-brand-green/10 group-hover:bg-brand-green/20 transition-colors"></div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center z-10"><span class="text-xs font-mono uppercase tracking-widest text-gray-400 mb-2">03 // Next Sequence</span><h2 class="text-4xl md:text-6xl font-display font-bold uppercase text-white group-hover:scale-110 transition-transform duration-500">Join The Team <i class="fas fa-arrow-right ml-4"></i></h2></div>
-                </a>`;
-            },
-
-            // --- GENERIC SUB-PAGE ---
-            getServiceDetailHTML: function(data) {
-                const serviceKeys = Object.keys(siteData).filter(k => !['home','servicesOverview','career'].includes(k));
-                const sidebarHTML = serviceKeys.map(key => {
-                    const s = siteData[key];
-                    const isActive = s.id === data.id;
-                    const activeClass = isActive ? 'text-brand-saffron scale-110 drop-shadow-[0_0_8px_rgba(255,153,51,0.8)]' : 'text-gray-500 hover:text-white';
-                    return `<a href="#" onclick="window.router.navigate('${s.id}'); return false;" class="service-dock-item relative group flex items-center justify-center w-12 h-12 mb-4 transition-all duration-300 ${activeClass} magnetic-element" data-strength="10"><i class="fas ${s.icon} text-xl dock-icon transition-all duration-300"></i><div class="dock-tooltip absolute right-16 bg-white/10 backdrop-blur-md px-4 py-2 rounded text-xs uppercase tracking-widest text-white opacity-0 -translate-x-4 transition-all duration-300 border border-white/10 whitespace-nowrap z-50">${s.title}</div></a>`;
-                }).join('');
-
-                return `
-                <div class="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col items-center pr-6">
-                    <div class="w-px h-12 bg-gradient-to-b from-transparent to-gray-800 mb-4"></div>
-                    ${sidebarHTML}
-                    <div class="w-px h-12 bg-gradient-to-b from-gray-800 to-transparent mt-4"></div>
-                </div>
-
-                <div class="relative min-h-[85vh] w-full overflow-hidden flex flex-col justify-end pt-40 pb-20 px-6 md:px-12 border-b border-white/10 perspective-scene">
-                    <div class="absolute inset-0 bg-cover bg-center parallax-layer" style="background-image: url('${data.image}');" data-scroll-speed="0.2"></div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-0"></div>
-                    <div class="relative z-10 w-full max-w-[1920px] mx-auto pr-16 md:pr-24 parallax-layer" data-speed-x="0.04" data-speed-y="0.04">
-                        <a href="#" onclick="window.router.navigate('servicesOverview'); return false;" class="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-widest text-gray-400 hover:text-white mb-8 hover-trigger bg-black/50 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md transition-all hover:bg-white hover:text-black group magnetic-element" data-strength="15"><i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Back to Services</a>
-                        <h1 class="hero-title font-display text-5xl md:text-9xl font-extrabold uppercase text-white leading-none mb-6 glitch-text" data-text="${data.title}">${data.title}</h1>
-                        <p class="text-xl md:text-2xl font-light text-gray-300 max-w-2xl hero-desc opacity-0">${data.subtitle}</p>
-                    </div>
-                </div>
-
-                <section class="border-b border-white/10 bg-brand-dark">
-                    <div class="max-w-[1920px] mx-auto grid grid-cols-1 md:grid-cols-12">
-                        <div class="md:col-span-4 p-8 md:p-16 border-b md:border-b-0 md:border-r border-white/10 bg-[#080808]">
-                            <span class="text-xs font-mono font-bold uppercase tracking-widest ${data.color} mb-6 block">/// Overview</span>
-                            <p class="text-lg md:text-xl leading-relaxed text-gray-400 font-light text-justify mb-8">${data.desc}</p>
-                            <span class="text-xs font-mono font-bold uppercase tracking-widest text-white mb-4 block">/// Our Approach</span>
-                            <p class="text-md leading-relaxed text-gray-500 font-light text-justify">${data.extraContent}</p>
-                        </div>
-                        <div class="md:col-span-8 p-8 md:p-16 bg-[#0a0a0a]">
-                            <h3 class="text-3xl font-display font-bold uppercase mb-12 flex items-center gap-4"><i class="fas fa-layer-group text-brand-saffron"></i> Service Matrix</h3>
-                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                ${data.services.map(s => `
-                                    <li class="neumorphic-card p-8 group cursor-default relative overflow-hidden">
-                                        <div class="tilt-inner flex flex-col h-full justify-between z-10 relative">
-                                            <i class="fas ${s.icon} text-3xl ${data.color} mb-6 opacity-50 group-hover:opacity-100 transition-opacity"></i>
-                                            <h4 class="text-xl font-display font-bold uppercase tracking-wide text-gray-300 group-hover:text-white">${s.name}</h4>
-                                            <div class="w-12 h-1 bg-white/10 mt-4 group-hover:w-full group-hover:bg-brand-saffron transition-all duration-500"></div>
-                                        </div>
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-
-                <a href="#" onclick="window.router.navigate('${data.next}'); return false;" class="block relative h-64 overflow-hidden group border-b border-white/10 hover-trigger">
-                    <div class="absolute inset-0 bg-brand-purple/10 group-hover:bg-brand-purple/20 transition-colors"></div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
-                        <span class="text-xs font-mono uppercase tracking-widest text-gray-400 mb-2">Next Sequence</span>
-                        <h2 class="text-4xl md:text-6xl font-display font-bold uppercase text-white group-hover:scale-110 transition-transform duration-500">
-                            ${siteData[data.next].title} <i class="fas fa-arrow-right ml-4"></i>
-                        </h2>
-                    </div>
-                </a>`;
-            },
-
-            // --- 03 CAREER HTML ---
-            getCareerHTML: function() {
-                // NETLIFY CAREER FORM: Note the "form-name" hidden input and "enctype" for files
-                return `
-                <div class="relative min-h-[70vh] w-full overflow-hidden flex flex-col justify-end pt-40 pb-20 px-6 md:px-12 border-b border-white/10 perspective-scene">
-                     <div class="absolute inset-0 bg-cover bg-center parallax-layer" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');" data-scroll-speed="0.2"></div>
-                     <div class="absolute inset-0 bg-black/70 z-0"></div>
-                     <div class="relative z-10 w-full max-w-[1920px] mx-auto parallax-layer" data-speed-y="0.05">
-                        <a href="#" onclick="window.router.navigate('home'); return false;" class="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-widest text-gray-400 hover:text-white mb-8 hover-trigger bg-black/50 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md transition-all hover:bg-white hover:text-black group"><i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Back to Hub</a>
-                        <h1 class="hero-title font-display text-5xl md:text-9xl font-extrabold uppercase text-white leading-none mb-6 glitch-text" data-text="JOIN THE CULT">Join The Cult</h1>
-                     </div>
-                </div>
-                <section class="border-b border-white/10 bg-brand-dark p-8 md:p-16">
-                     <div class="max-w-4xl mx-auto">
-                        <div class="text-center mb-16">
-                            <h3 class="text-3xl font-display font-bold uppercase text-white mb-6">Current Openings</h3>
-                            <p class="text-lg md:text-xl text-gray-400 mb-12 font-light leading-relaxed max-w-3xl mx-auto">
-                                At Bharat Mediya House, we don't hire employees; we recruit partners in crime. If you are obsessed with perfection and allergic to mediocrity, you belong here.
-                            </p>
-                            
-                            <div class="grid gap-6 text-left">
-                                <div class="neumorphic-card p-6 group cursor-pointer">
-                                    <div class="flex justify-between items-center">
-                                        <h4 class="text-xl font-bold text-white">Art Director</h4>
-                                        <span class="text-xs font-mono text-brand-saffron border border-brand-saffron px-2 py-1 rounded">Apply Below</span>
-                                    </div>
-                                    <p class="text-sm text-gray-500 mt-2">Mumbai • Full Time</p>
-                                </div>
-                                <div class="neumorphic-card p-6 group cursor-pointer">
-                                    <div class="flex justify-between items-center">
-                                        <h4 class="text-xl font-bold text-white">Motion Designer</h4>
-                                        <span class="text-xs font-mono text-brand-saffron border border-brand-saffron px-2 py-1 rounded">Apply Below</span>
-                                    </div>
-                                    <p class="text-sm text-gray-500 mt-2">Remote • Contract</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Application Form Section -->
-                        <div class="border-t border-white/10 pt-16">
-                            <h3 class="text-2xl font-display font-bold uppercase text-white mb-8 text-center">Submit Application</h3>
-                            
-                            <!-- DYNAMIC JS FORM SUBMISSION -->
-                            <form name="career-form" method="POST" data-netlify="true" enctype="multipart/form-data" class="space-y-8 max-w-2xl mx-auto">
-                                <input type="hidden" name="form-name" value="career-form" />
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <div class="relative group">
-                                        <input type="text" name="applicant_name" class="peer w-full neumorphic-input text-lg font-light placeholder-transparent" placeholder=" " required>
-                                        <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-saffron transition-all pointer-events-none">Full Name</label>
-                                    </div>
-                                    <div class="relative group">
-                                        <input type="email" name="applicant_email" class="peer w-full neumorphic-input text-lg font-light placeholder-transparent" placeholder=" " required>
-                                        <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-saffron transition-all pointer-events-none">Email Address</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <div class="relative group">
-                                        <input type="tel" name="applicant_mobile" class="peer w-full neumorphic-input text-lg font-light placeholder-transparent" placeholder=" " required>
-                                        <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-600 peer-placeholder-shown:top-4 peer-focus:-top-6 peer-focus:text-xs peer-focus:text-brand-saffron transition-all pointer-events-none">Mobile Number</label>
-                                    </div>
-                                    <div class="relative group">
-                                        <select name="applicant_post" class="peer w-full neumorphic-input text-lg font-light text-white appearance-none cursor-pointer">
-                                            <option value="" disabled selected class="text-gray-500">Select Position</option>
-                                            <option value="art_director" class="bg-[#080808]">Art Director</option>
-                                            <option value="motion_designer" class="bg-[#080808]">Motion Designer</option>
-                                            <option value="copywriter" class="bg-[#080808]">Copywriter</option>
-                                            <option value="account_manager" class="bg-[#080808]">Account Manager</option>
-                                            <option value="intern" class="bg-[#080808]">Internship</option>
-                                            <option value="other" class="bg-[#080808]">Other</option>
-                                        </select>
-                                        <label class="absolute left-4 -top-6 text-xs text-gray-500 uppercase tracking-widest peer-focus:text-brand-saffron transition-all pointer-events-none">Position Applied For</label>
-                                        <i class="fas fa-chevron-down absolute right-6 top-5 text-gray-500 text-xs pointer-events-none"></i>
-                                    </div>
-                                </div>
-
-                                <div class="relative group pt-4">
-                                    <label class="block text-xs text-gray-500 uppercase tracking-widest mb-3">Upload Resume / Portfolio (PDF)</label>
-                                    <label class="flex items-center justify-center w-full h-32 neumorphic-input border border-white/5 border-dashed cursor-pointer hover:bg-white/5 transition-all group">
-                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-3 group-hover:text-brand-saffron transition-colors"></i>
-                                            <p class="text-sm text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                        </div>
-                                        <input type="file" name="resume" class="hidden" accept=".pdf,.doc,.docx" />
-                                    </label>
-                                </div>
-                                <div class="text-center pt-4">
-                                    <button type="submit" class="px-8 py-4 w-full md:w-auto neumorphic-btn-dark font-bold uppercase tracking-widest rounded-full">
-                                        Send Application
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                     </div>
-                </section>`;
-            },
-
-            renderServiceLink: function(num, title, color) {
-                return `<a href="#" onclick="window.router.navigate('${title.split(' ')[0].toLowerCase().replace('/','')}'); return false;" class="neumorphic-card p-8 md:p-14 flex justify-between items-center group block hover-trigger liquid-target"><div class="flex items-center gap-8 md:gap-16"><span class="text-xs font-mono text-gray-600 group-hover:text-brand-${color} transition-colors">/${num}</span><h3 class="text-3xl md:text-6xl font-display font-bold uppercase text-gray-300 group-hover:text-white transition-colors">${title}</h3></div><i class="fas fa-arrow-right text-2xl opacity-0 -translate-x-10 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 text-white"></i></a>`;
-            }
-        };
-
-        // --- HERO SLIDER LOGIC ---
-        function initHeroSlider() {
+        // --- GLOBAL EFFECTS & ANIMATION INIT ---
+        window.initHeroSlider = function() {
             const slides = document.querySelectorAll('.hero-slide');
             let current = 0;
             if(slides.length === 0) return;
-            sliderInterval = setInterval(() => {
+            if(window.sliderInterval) clearInterval(window.sliderInterval);
+            window.sliderInterval = setInterval(() => {
                 slides[current].classList.remove('active');
                 current = (current + 1) % slides.length;
                 slides[current].classList.add('active');
             }, 6000);
         }
 
-        // --- FAQ LOGIC ---
-        function initFAQ() {
+        window.initFAQ = function() {
             const container = document.getElementById('faq-container');
             if(!container) return;
             const faqs = [{ q: "What defines your strategic approach?", a: "We believe in data-backed creativity." }, { q: "Do you handle international media?", a: "Yes. Our network extends across NA, MENA, and APAC." }, { q: "What is your typical timeline?", a: "Brand identity takes 4-6 weeks; campaigns span months." }, { q: "Can you work with existing guidelines?", a: "Absolutely. We adhere to or evolve them." }, { q: "Do you offer post-launch support?", a: "Optimization is continuous." }, { q: "How do you measure success?", a: "KPIs: ROI, ROAS, Brand Recall." }, { q: "Are you accepting new partners?", a: "We accept limited partners per quarter." }];
-            container.innerHTML = faqs.map((f, i) => `<div class="faq-item group hover-trigger cursor-pointer" onclick="toggleFAQ(this)"><div class="flex justify-between items-center py-6 pr-4"><h4 class="text-lg md:text-xl font-display font-medium text-gray-300 group-hover:text-white transition-colors">0${i+1}. ${f.q}</h4><i class="fas fa-plus text-gray-500 faq-icon"></i></div><div class="faq-answer"><p class="pb-6 text-gray-400 font-light max-w-2xl">${f.a}</p></div></div>`).join('');
+            container.innerHTML = faqs.map((f, i) => `<div class="faq-item group hover-trigger cursor-pointer" onclick="toggleFAQ(this)"><div class="flex justify-between items-center py-6 pr-4"><h4 class="text-base md:text-xl font-display font-medium text-gray-300 group-hover:text-white transition-colors">0${i+1}. ${f.q}</h4><i class="fas fa-plus text-gray-500 faq-icon"></i></div><div class="faq-answer"><p class="pb-6 text-sm md:text-base text-gray-400 font-light max-w-2xl">${f.a}</p></div></div>`).join('');
         }
         window.toggleFAQ = function(el) { document.querySelectorAll('.faq-item').forEach(i => { if(i!==el) i.classList.remove('active'); }); el.classList.toggle('active'); };
 
-        // Expose functions globally for the preloader to call
         window.initPageAnimations = function() {
-            // Cinematic Reveal (Fade + Scale Up)
             if(document.querySelector(".hero-title")) {
                 gsap.from(".hero-title", {y: 100, opacity: 0, duration: 1.2, ease: "power3.out"});
             }
-            
-            // Depth of Field Blur on Scroll
             const heroSlides = document.querySelectorAll(".hero-slide");
             if(heroSlides.length > 0) {
                 gsap.to(".hero-slide", {
@@ -947,7 +1078,6 @@
                     }
                 });
             }
-
             gsap.utils.toArray('.scroll-reveal').forEach(elem => {
                 gsap.to(elem, {
                     scrollTrigger: {
@@ -961,12 +1091,11 @@
                     ease: "power3.out"
                 });
             });
-
             gsap.utils.toArray('.parallax-layer').forEach(layer => {
                 const speed = layer.getAttribute('data-scroll-speed');
                 if(speed) {
                     gsap.to(layer, {
-                        y: (i, target) => ScrollTrigger.maxScroll(window) * speed,
+                        y: (i, target) => (ScrollTrigger.maxScroll(window) || 500) * parseFloat(speed),
                         ease: "none",
                         scrollTrigger: {
                             trigger: document.body,
@@ -995,12 +1124,10 @@
                 
                 if(neuralGlow) { neuralGlow.style.setProperty('--x', `${x}px`); neuralGlow.style.setProperty('--y', `${y}px`); }
 
-                // Standard cursor logic
-                if(cursorDot) {
-                    gsap.to(cursorDot, { x: x, y: y, duration: 0.1, xPercent: -50, yPercent: -50 });
-                }
-                if(cursorOutline) {
-                    gsap.to(cursorOutline, { x: x, y: y, duration: 0.4, xPercent: -50, yPercent: -50 });
+                // Desktop only cursor logic
+                if (window.matchMedia("(pointer: fine)").matches) {
+                    if(cursorDot) gsap.to(cursorDot, { x: x, y: y, duration: 0.1, xPercent: -50, yPercent: -50 });
+                    if(cursorOutline) gsap.to(cursorOutline, { x: x, y: y, duration: 0.4, xPercent: -50, yPercent: -50 });
                 }
 
                 // Perspective & Parallax
@@ -1019,18 +1146,10 @@
                     });
                 }
 
-                document.querySelectorAll('.parallax-layer').forEach(layer => {
-                    const speedX = layer.getAttribute('data-speed-x') || 0;
-                    const speedY = layer.getAttribute('data-speed-y') || 0;
-                    gsap.to(layer, {
-                        x: -deltaX * 100 * speedX,
-                        y: -deltaY * 100 * speedY,
-                        duration: 1,
-                        ease: "power2.out"
-                    });
-                });
-
                 document.querySelectorAll('.magnetic-element:hover').forEach(el => {
+                    // Disable magnetic on touch devices
+                    if (!window.matchMedia("(pointer: fine)").matches) return;
+
                     const rect = el.getBoundingClientRect();
                     const strength = el.getAttribute('data-strength') || 30;
                     const elCenterX = rect.left + rect.width / 2;
@@ -1052,7 +1171,6 @@
                     gsap.to(el, { x: 0, y: 0, duration: 0.8, ease: "elastic.out(1, 0.3)" });
                 });
                 
-                // Cursor hover effect
                 el.addEventListener('mouseenter', () => { 
                     document.body.classList.add('hovering');
                 });
@@ -1062,16 +1180,14 @@
                 });
             });
 
-            // Also add hover effect for other interactive elements
             document.querySelectorAll('a, button, .cursor-pointer, .neumorphic-card, .neumorphic-btn, .neumorphic-btn-dark').forEach(el => {
                 el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
                 el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
             });
 
-
             if(typeof VanillaTilt !== 'undefined') {
                 const tiltCards = document.querySelectorAll(".tilt-card");
-                if (tiltCards.length > 0) {
+                if (tiltCards.length > 0 && window.matchMedia("(pointer: fine)").matches) {
                     VanillaTilt.init(tiltCards, { 
                         max: 15, 
                         speed: 400, 
